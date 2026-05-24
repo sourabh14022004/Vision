@@ -108,7 +108,7 @@ const SplashScreen = ({ modelLoaded = false, onFinish }) => {
         {/* Logo row */}
         <div style={logoRowStyle}>
           <div style={logoIconStyle}>✦</div>
-          <span style={logoTextStyle}>Vision</span>
+          <span style={logoTextStyle}>Vishion</span>
         </div>
 
         {/* Loading bar */}

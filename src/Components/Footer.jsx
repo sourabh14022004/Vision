@@ -159,8 +159,8 @@ const footerLinks = [
 const contactInfo = [
   {
     icon: <Mail size={18} className="text-[#3ca2fa]" />,
-    text: "hello@visionev.com",
-    href: "mailto:hello@visionev.com",
+    text: "hello@Vishionev.com",
+    href: "mailto:hello@Vishionev.com",
   },
   {
     icon: <Phone size={18} className="text-[#3ca2fa]" />,
@@ -192,10 +192,10 @@ function Footer() {
           <div className="flex flex-col space-y-4">
             <div className="flex items-center space-x-2">
               <span className="text-[#3ca2fa] text-3xl font-extrabold">&hearts;</span>
-              <span className="text-white text-3xl font-bold">Vision</span>
+              <span className="text-white text-3xl font-bold">Vishion</span>
             </div>
             <p className="text-sm leading-relaxed text-gray-400">
-              Vision is a next-generation electric scooter brand. Clean, fast, and smart — built for the streets.
+              Vishion is a next-generation electric scooter brand. Clean, fast, and smart — built for the streets.
             </p>
           </div>
 
@@ -268,14 +268,14 @@ function Footer() {
 
           {/* Copyright */}
           <p className="text-center md:text-left text-gray-500">
-            &copy; {new Date().getFullYear()} Vision. All rights reserved.
+            &copy; {new Date().getFullYear()} Vishion. All rights reserved.
           </p>
         </div>
       </div>
 
       {/* Text hover effect — exact demo sizing */}
       <div className="lg:flex hidden h-[35rem] -mt-52 -mb-36">
-        <TextHoverEffect text="Vision" className="z-50"/>
+        <TextHoverEffect text="Vishion" className="z-50"/>
       </div>
 
       <FooterBackgroundGradient />

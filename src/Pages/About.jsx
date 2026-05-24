@@ -36,7 +36,7 @@ const About = () => {
           </ul>
 
           <p className="text-blue-600 font-semibold text-lg">
-            A vision for a better future. Ride with Version. 🌱⚡
+            A Vishion for a better future. Ride with Version. 🌱⚡
           </p>
         </div>
       </div>

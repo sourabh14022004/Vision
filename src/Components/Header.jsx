@@ -27,7 +27,7 @@ const Header = () => {
           >
             ✦
           </span>
-          <span className="text-gray-200 font-medium">Vision</span>
+          <span className="text-gray-200 font-medium">Vishion</span>
         </Link>
 
         {/* Center Nav Pill */}
