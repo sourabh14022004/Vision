@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
     } = product || {};
 
     return (
-        <div className="flex items-center justify-center p-8 bg-gray-100">
+        <div className="flex items-center justify-center p-8 bg-transparent">
             <motion.div
                 className="w-[600px] bg-white rounded-2xl shadow-md p-4 flex flex-col justify-between hover:shadow-lg transition duration-300 group relative"
                 whileHover={{ scale: 1.04 }}

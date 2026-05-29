@@ -41,8 +41,8 @@ const products = [
 
 const Products = () => {
   return (
-    <div className=''>
-    <ProductCard/>
+    <div className="pt-28 min-h-screen bg-gray-50 text-gray-900 w-full">
+      <ProductCard/>
     <section className="max-w-7xl mx-auto px-4 py-16">
       <h2 className="text-4xl font-bold text-gray-900 mb-10 text-center">
         Explore Our Electric Scooters

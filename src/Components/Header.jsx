@@ -1,41 +1,89 @@
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLightMode, setIsLightMode] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleTheme = () => {
+      const path = location.pathname;
+      if (path === '/products') {
+        setIsLightMode(true);
+      } else if (path === '/contact' || path === '/about') {
+        setIsLightMode(false);
+      } else if (path === '/') {
+        // Scroll-based detection for Home page
+        // Reviews section starts after ~4.8 * viewport height
+        const threshold = 4.8 * window.innerHeight;
+        if (window.scrollY >= threshold) {
+          setIsLightMode(true);
+        } else {
+          setIsLightMode(false);
+        }
+      } else {
+        setIsLightMode(false);
+      }
+    };
+
+    // Run initial theme check
+    handleTheme();
+
+    // Listen to scroll events if on Home page
+    if (location.pathname === '/') {
+      window.addEventListener('scroll', handleTheme, { passive: true });
+      window.addEventListener('resize', handleTheme, { passive: true });
+      return () => {
+        window.removeEventListener('scroll', handleTheme);
+        window.removeEventListener('resize', handleTheme);
+      };
+    }
+  }, [location.pathname]);
 
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl">
       <div
         className="flex items-center justify-between px-5 py-3 rounded-2xl"
         style={{
-          background: 'linear-gradient(135deg, #1a1a1a 0%, #111111 100%)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: isLightMode 
+            ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(245, 245, 247, 0.8) 100%)' 
+            : 'linear-gradient(135deg, rgba(26, 26, 26, 0.45) 0%, rgba(17, 17, 17, 0.55) 100%)',
+          border: isLightMode 
+            ? '1px solid rgba(0, 0, 0, 0.08)' 
+            : '1px solid rgba(255,255,255,0.08)',
+          boxShadow: isLightMode 
+            ? '0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8)' 
+            : '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
         }}
       >
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 text-white font-semibold text-base tracking-tight select-none"
+          className="flex items-center gap-2 font-semibold text-base tracking-tight select-none"
         >
           <span
-            className="w-7 h-7 rounded-full flex items-center justify-center text-sm"
-            style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}
+            className="w-7 h-7 rounded-full flex items-center justify-center text-sm transition-all"
+            style={{ 
+              background: isLightMode ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.1)', 
+              border: isLightMode ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.15)',
+              color: isLightMode ? '#1f2937' : '#e5e7eb'
+            }}
           >
             ✦
           </span>
-          <span className="text-gray-200 font-medium">Vishion</span>
+          <span className={`font-medium transition-colors ${isLightMode ? 'text-gray-800' : 'text-gray-200'}`}>Vishion</span>
         </Link>
 
         {/* Center Nav Pill */}
         <nav
-          className="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-2xl"
+          className="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-2xl transition-all"
           style={{
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            background: isLightMode ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.05)',
+            border: isLightMode ? '1px solid rgba(0,0,0,0.05)' : '1px solid rgba(255,255,255,0.08)',
           }}
         >
           {[
@@ -51,8 +99,12 @@ const Header = () => {
               className={({ isActive }) =>
                 `px-4 py-1.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? 'bg-[#2a2a2a] text-white shadow-sm border border-white/10'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? isLightMode 
+                      ? 'bg-white text-gray-900 shadow-sm border border-black/5 font-semibold' 
+                      : 'bg-[#2a2a2a] text-white shadow-sm border border-white/10'
+                    : isLightMode 
+                      ? 'text-gray-500 hover:text-gray-900 hover:bg-black/5' 
+                      : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`
               }
             >
@@ -66,9 +118,9 @@ const Header = () => {
           to="/products"
           className="hidden md:inline-flex items-center gap-1 text-sm font-medium text-white px-5 py-2 rounded-xl transition-all duration-200 hover:scale-[1.03] active:scale-95"
           style={{
-            background: 'rgba(255,255,255,0.07)',
-            border: '1px solid rgba(255,255,255,0.15)',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+            background: isLightMode ? '#111827' : 'rgba(255,255,255,0.07)',
+            border: isLightMode ? '1px solid #111827' : '1px solid rgba(255,255,255,0.15)',
+            boxShadow: isLightMode ? '0 2px 8px rgba(0,0,0,0.1)' : '0 2px 8px rgba(0,0,0,0.3)',
           }}
         >
           Get Yours
@@ -76,7 +128,7 @@ const Header = () => {
 
         {/* Mobile Hamburger */}
         <button
-          className="md:hidden text-gray-300 hover:text-white transition"
+          className={`md:hidden transition-colors ${isLightMode ? 'text-gray-700 hover:text-black' : 'text-gray-300 hover:text-white'}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle Menu"
         >
@@ -95,11 +147,19 @@ const Header = () => {
       {/* Mobile Dropdown */}
       {menuOpen && (
         <div
-          className="md:hidden mt-2 rounded-2xl overflow-hidden"
+          className="md:hidden mt-2 rounded-2xl overflow-hidden transition-all"
           style={{
-            background: 'linear-gradient(135deg, #1a1a1a 0%, #111111 100%)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            background: isLightMode 
+              ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(245, 245, 247, 0.95) 100%)' 
+              : 'linear-gradient(135deg, rgba(26, 26, 26, 0.45) 0%, rgba(17, 17, 17, 0.55) 100%)',
+            border: isLightMode 
+              ? '1px solid rgba(0, 0, 0, 0.08)' 
+              : '1px solid rgba(255,255,255,0.08)',
+            boxShadow: isLightMode 
+              ? '0 8px 32px rgba(0,0,0,0.08)' 
+              : '0 8px 32px rgba(0,0,0,0.5)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
           }}
         >
           {[
@@ -114,8 +174,10 @@ const Header = () => {
               end={to === '/'}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `block px-5 py-3 text-sm font-medium border-b border-white/5 transition-colors ${
-                  isActive ? 'text-white bg-white/5' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                `block px-5 py-3 text-sm font-medium border-b transition-colors ${
+                  isLightMode 
+                    ? `border-black/5 ${isActive ? 'text-black bg-black/5' : 'text-gray-600 hover:text-black hover:bg-black/5'}`
+                    : `border-white/5 ${isActive ? 'text-white bg-white/5' : 'text-gray-400 hover:text-white hover:bg-white/5'}`
                 }`
               }
             >
@@ -128,8 +190,8 @@ const Header = () => {
               onClick={() => setMenuOpen(false)}
               className="block text-center text-sm font-medium text-white px-5 py-2.5 rounded-xl transition-all"
               style={{
-                background: 'rgba(255,255,255,0.07)',
-                border: '1px solid rgba(255,255,255,0.15)',
+                background: isLightMode ? '#111827' : 'rgba(255,255,255,0.07)',
+                border: isLightMode ? '1px solid #111827' : '1px solid rgba(255,255,255,0.15)',
               }}
             >
               Get Yours
