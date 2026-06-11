@@ -145,8 +145,8 @@ function ScrollText() {
 
     return (
         <div
-            className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 z-20 pointer-events-none select-none"
-            style={{ maxWidth: '360px' }}
+            className="absolute left-4 sm:left-8 md:left-16 top-1/2 -translate-y-1/2 z-20 pointer-events-none select-none"
+            style={{ maxWidth: 'min(360px, 55vw)' }}
         >
             <TypewriterCard item={item} activeIdx={activeIdx} />
         </div>
@@ -340,14 +340,14 @@ function HandlebarFeature() {
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                         position: 'absolute',
-                        bottom: '16%',
+                        bottom: 'clamp(80px, 16%, 180px)',
                         left: '0',
                         right: '0',
                         padding: '0 5% 0 5%',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '12px',
-                        maxWidth: '640px',
+                        gap: '10px',
+                        maxWidth: 'min(640px, 90vw)',
                         lineHeight: 'normal',
                     }}
                 >
@@ -367,7 +367,7 @@ function HandlebarFeature() {
                     <h2 style={{
                         fontFamily: "'Inter', sans-serif",
                         fontWeight: 900,
-                        fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+                        fontSize: 'clamp(1.75rem, 5vw, 4.5rem)',
                         lineHeight: '1',
                         letterSpacing: '-0.025em',
                         color: '#ffffff',
@@ -380,7 +380,7 @@ function HandlebarFeature() {
                     {/* Body */}
                     <p style={{
                         fontFamily: "'Inter', sans-serif",
-                        fontSize: '0.9rem',
+                        fontSize: 'clamp(0.78rem, 2vw, 0.9rem)',
                         color: 'rgba(209,213,219,0.75)',
                         lineHeight: '1.75',
                         maxWidth: '420px',
@@ -390,7 +390,7 @@ function HandlebarFeature() {
                     </p>
 
                     {/* Specs row */}
-                    <div style={{ display: 'flex', gap: '24px', marginTop: '8px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '4px', flexWrap: 'wrap' }}>
                         {[
                             { label: 'Material', value: 'Alloy 6061' },
                             { label: 'Vibration', value: 'Dampened' },
@@ -413,34 +413,34 @@ function HandlebarFeature() {
                     background: 'rgba(13, 13, 13, 0.75)',
                     backdropFilter: 'blur(12px)',
                     borderTop: '1px solid rgba(255,255,255,0.08)',
-                    padding: '20px 5%',
+                    padding: '14px 5%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
-                    gap: '16px',
+                    gap: '10px',
                     zIndex: 10,
                     lineHeight: 'normal',
                 }}>
                     <p style={{
                         fontFamily: 'monospace',
-                        fontSize: '0.65rem',
-                        letterSpacing: '0.2em',
+                        fontSize: '0.6rem',
+                        letterSpacing: '0.18em',
                         textTransform: 'uppercase',
                         color: 'rgba(255,255,255,0.2)',
                         margin: 0,
                     }}>
                         Version Vo · Handlebar System · 2024
                     </p>
-                    <div style={{ display: 'flex', gap: '32px' }}>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                         {[
                             { icon: '↔', label: '720mm Width' },
                             { icon: '↕', label: '85mm Rise' },
                             { icon: '⟲', label: '360° Adjustable' },
                         ].map(item => (
                             <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ color: 'rgba(96,165,250,0.7)', fontSize: '0.9rem' }}>{item.icon}</span>
-                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{item.label}</span>
+                                <span style={{ color: 'rgba(96,165,250,0.7)', fontSize: '0.85rem' }}>{item.icon}</span>
+                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{item.label}</span>
                             </div>
                         ))}
                     </div>
@@ -513,13 +513,13 @@ function InstrumentClusterFeature() {
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                         position: 'absolute',
-                        bottom: '16%',
+                        bottom: 'clamp(80px, 16%, 180px)',
                         right: '5%',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'flex-end',
-                        gap: '12px',
-                        maxWidth: '580px',
+                        gap: '10px',
+                        maxWidth: 'min(580px, 90vw)',
                         textAlign: 'right',
                         lineHeight: 'normal',
                     }}
@@ -540,7 +540,7 @@ function InstrumentClusterFeature() {
                     <h2 style={{
                         fontFamily: "'Inter', sans-serif",
                         fontWeight: 900,
-                        fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+                        fontSize: 'clamp(1.75rem, 5vw, 4.5rem)',
                         lineHeight: '1',
                         letterSpacing: '-0.025em',
                         color: '#ffffff',
@@ -553,7 +553,7 @@ function InstrumentClusterFeature() {
                     {/* Body */}
                     <p style={{
                         fontFamily: "'Inter', sans-serif",
-                        fontSize: '0.9rem',
+                        fontSize: 'clamp(0.78rem, 2vw, 0.9rem)',
                         color: 'rgba(209,213,219,0.72)',
                         lineHeight: '1.75',
                         maxWidth: '400px',
@@ -563,7 +563,7 @@ function InstrumentClusterFeature() {
                     </p>
 
                     {/* Specs row */}
-                    <div style={{ display: 'flex', gap: '24px', marginTop: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '4px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                         {[
                             { label: 'Display', value: '5" TFT' },
                             { label: 'Brightness', value: '800 nits' },
@@ -586,26 +586,26 @@ function InstrumentClusterFeature() {
                     background: 'rgba(12, 12, 12, 0.75)',
                     backdropFilter: 'blur(12px)',
                     borderTop: '1px solid rgba(255,255,255,0.06)',
-                    padding: '20px 5%',
+                    padding: '14px 5%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
-                    gap: '16px',
+                    gap: '10px',
                     lineHeight: 'normal',
                     zIndex: 10,
                 }}>
                     <p style={{
                         fontFamily: 'monospace',
-                        fontSize: '0.65rem',
-                        letterSpacing: '0.2em',
+                        fontSize: '0.6rem',
+                        letterSpacing: '0.18em',
                         textTransform: 'uppercase',
                         color: 'rgba(255,255,255,0.18)',
                         margin: 0,
                     }}>
                         Version Vo · Instrument Cluster · 2024
                     </p>
-                    <div style={{ display: 'flex', gap: '32px' }}>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                         {[
                             { icon: '◉', label: 'Real-time Trip Data' },
                             { icon: '⚡', label: 'Battery SOC' },
@@ -613,7 +613,7 @@ function InstrumentClusterFeature() {
                         ].map(item => (
                             <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                 <span style={{ color: 'rgba(251,191,36,0.7)', fontSize: '0.85rem' }}>{item.icon}</span>
-                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(255,255,255,0.38)', fontWeight: 500 }}>{item.label}</span>
+                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(255,255,255,0.38)', fontWeight: 500 }}>{item.label}</span>
                             </div>
                         ))}
                     </div>
@@ -685,13 +685,13 @@ function FrontWheelFeature() {
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                         position: 'absolute',
-                        bottom: '16%',
+                        bottom: 'clamp(80px, 16%, 180px)',
                         right: '5%',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'flex-end',
-                        gap: '12px',
-                        maxWidth: '580px',
+                        gap: '10px',
+                        maxWidth: 'min(580px, 90vw)',
                         textAlign: 'right',
                         lineHeight: 'normal',
                     }}
@@ -712,7 +712,7 @@ function FrontWheelFeature() {
                     <h2 style={{
                         fontFamily: "'Inter', sans-serif",
                         fontWeight: 900,
-                        fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+                        fontSize: 'clamp(1.75rem, 5vw, 4.5rem)',
                         lineHeight: '1',
                         letterSpacing: '-0.025em',
                         color: '#ffffff',
@@ -725,7 +725,7 @@ function FrontWheelFeature() {
                     {/* Body */}
                     <p style={{
                         fontFamily: "'Inter', sans-serif",
-                        fontSize: '0.9rem',
+                        fontSize: 'clamp(0.78rem, 2vw, 0.9rem)',
                         color: 'rgba(209,213,219,0.72)',
                         lineHeight: '1.75',
                         maxWidth: '440px',
@@ -735,7 +735,7 @@ function FrontWheelFeature() {
                     </p>
 
                     {/* Specs row — aligned right */}
-                    <div style={{ display: 'flex', gap: '28px', marginTop: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '4px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                         {[
                             { label: 'Tyre Size', value: '10" Pneumatic' },
                             { label: 'Type', value: 'Tubeless' },
@@ -758,26 +758,26 @@ function FrontWheelFeature() {
                     background: 'rgba(10, 10, 10, 0.75)',
                     backdropFilter: 'blur(12px)',
                     borderTop: '1px solid rgba(255,255,255,0.06)',
-                    padding: '20px 5%',
+                    padding: '14px 5%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
-                    gap: '16px',
+                    gap: '10px',
                     lineHeight: 'normal',
                     zIndex: 10,
                 }}>
                     <p style={{
                         fontFamily: 'monospace',
-                        fontSize: '0.65rem',
-                        letterSpacing: '0.2em',
+                        fontSize: '0.6rem',
+                        letterSpacing: '0.18em',
                         textTransform: 'uppercase',
                         color: 'rgba(255,255,255,0.18)',
                         margin: 0,
                     }}>
                         Version Vo · Front Wheel System · 2024
                     </p>
-                    <div style={{ display: 'flex', gap: '32px' }}>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                         {[
                             { icon: '○', label: 'Anti-lock Braking' },
                             { icon: '❤', label: 'Regenerative Braking' },
@@ -785,7 +785,7 @@ function FrontWheelFeature() {
                         ].map(item => (
                             <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                 <span style={{ color: 'rgba(52,211,153,0.7)', fontSize: '0.85rem' }}>{item.icon}</span>
-                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(255,255,255,0.38)', fontWeight: 500 }}>{item.label}</span>
+                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(255,255,255,0.38)', fontWeight: 500 }}>{item.label}</span>
                             </div>
                         ))}
                     </div>
@@ -857,14 +857,14 @@ function RearWheelFeature() {
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                         position: 'absolute',
-                        bottom: '16%',
+                        bottom: 'clamp(80px, 16%, 180px)',
                         left: '0',
                         right: '0',
                         padding: '0 5%',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '12px',
-                        maxWidth: '640px',
+                        gap: '10px',
+                        maxWidth: 'min(640px, 90vw)',
                         lineHeight: 'normal',
                     }}
                 >
@@ -884,7 +884,7 @@ function RearWheelFeature() {
                     <h2 style={{
                         fontFamily: "'Inter', sans-serif",
                         fontWeight: 900,
-                        fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+                        fontSize: 'clamp(1.75rem, 5vw, 4.5rem)',
                         lineHeight: '1',
                         letterSpacing: '-0.025em',
                         color: '#ffffff',
@@ -897,7 +897,7 @@ function RearWheelFeature() {
                     {/* Body */}
                     <p style={{
                         fontFamily: "'Inter', sans-serif",
-                        fontSize: '0.9rem',
+                        fontSize: 'clamp(0.78rem, 2vw, 0.9rem)',
                         color: 'rgba(209,213,219,0.72)',
                         lineHeight: '1.75',
                         maxWidth: '440px',
@@ -907,7 +907,7 @@ function RearWheelFeature() {
                     </p>
 
                     {/* Specs row — aligned left */}
-                    <div style={{ display: 'flex', gap: '28px', marginTop: '8px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '4px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {[
                             { label: 'Tyre Size', value: '10" Pneumatic' },
                             { label: 'Type', value: 'Tubeless' },
@@ -930,26 +930,26 @@ function RearWheelFeature() {
                     background: 'rgba(10, 10, 10, 0.75)',
                     backdropFilter: 'blur(12px)',
                     borderTop: '1px solid rgba(255,255,255,0.06)',
-                    padding: '20px 5%',
+                    padding: '14px 5%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
-                    gap: '16px',
+                    gap: '10px',
                     lineHeight: 'normal',
                     zIndex: 10,
                 }}>
                     <p style={{
                         fontFamily: 'monospace',
-                        fontSize: '0.65rem',
-                        letterSpacing: '0.2em',
+                        fontSize: '0.6rem',
+                        letterSpacing: '0.18em',
                         textTransform: 'uppercase',
                         color: 'rgba(255,255,255,0.18)',
                         margin: 0,
                     }}>
                         Version Vo · Rear Wheel System · 2024
                     </p>
-                    <div style={{ display: 'flex', gap: '32px' }}>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                         {[
                             { icon: '⚡', label: 'Hub Motor Drive' },
                             { icon: '❤', label: 'Regenerative Braking' },
@@ -957,7 +957,7 @@ function RearWheelFeature() {
                         ].map(item => (
                             <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                 <span style={{ color: 'rgba(167,139,250,0.7)', fontSize: '0.85rem' }}>{item.icon}</span>
-                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(255,255,255,0.38)', fontWeight: 500 }}>{item.label}</span>
+                                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(255,255,255,0.38)', fontWeight: 500 }}>{item.label}</span>
                             </div>
                         ))}
                     </div>

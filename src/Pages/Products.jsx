@@ -332,7 +332,7 @@ const Products = () => {
           03  PERFORMANCE BANNER
       ══════════════════════════════════════════ */}
       <section
-        className="relative px-8 md:px-16 py-32 overflow-hidden border-t"
+        className="relative px-8 md:px-16 py-16 md:py-32 overflow-hidden border-t"
         style={{ background: '#111', borderColor: 'rgba(255,255,255,0.06)' }}
       >
         {/* Ambient glow left */}
@@ -347,11 +347,11 @@ const Products = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute right-0 bottom-0 h-full object-contain pointer-events-none"
+          className="hidden sm:block absolute right-0 bottom-0 h-full object-contain pointer-events-none"
           style={{ maxWidth: '45%', filter: 'drop-shadow(0 30px 80px rgba(0,0,0,0.8)) saturate(0.9)' }}
         />
 
-        <div className="relative z-10 max-w-5xl">
+        <div className="relative z-10 max-w-5xl pr-0 sm:pr-[40%]">
           <motion.p
             variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0}
             className="text-[10px] font-mono tracking-[0.22em] uppercase mb-8"
