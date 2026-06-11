@@ -293,7 +293,7 @@ function HandlebarFeature() {
             <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', lineHeight: 0 }}>
                 <video
                     ref={videoRef}
-                    src="public/assets/Handlebars.mp4"
+                    src="/assets/Handlebars.mp4"
                     muted
                     playsInline
                     loop
