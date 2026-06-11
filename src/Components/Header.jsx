@@ -9,16 +9,20 @@ const Header = () => {
   useEffect(() => {
     const handleTheme = () => {
       const path = location.pathname;
-      if (path === '/products') {
-        setIsLightMode(true);
-      } else if (path === '/contact' || path === '/about') {
+      if (path === '/contact' || path === '/about' || path === '/products') {
         setIsLightMode(false);
       } else if (path === '/') {
-        // Scroll-based detection for Home page
-        // Reviews section starts after ~4.8 * viewport height
-        const threshold = 4.8 * window.innerHeight;
-        if (window.scrollY >= threshold) {
-          setIsLightMode(true);
+        // Dynamically find the first light (bg-white) section — ProductReview
+        // so threshold automatically adjusts when new sections are added above it.
+        const lightSection = document.querySelector('section.bg-white');
+        if (lightSection) {
+          const sectionTop = lightSection.getBoundingClientRect().top + window.scrollY;
+          // Switch to light when the top of the light section is within the top-half of the viewport
+          if (window.scrollY + window.innerHeight * 0.25 >= sectionTop) {
+            setIsLightMode(true);
+          } else {
+            setIsLightMode(false);
+          }
         } else {
           setIsLightMode(false);
         }

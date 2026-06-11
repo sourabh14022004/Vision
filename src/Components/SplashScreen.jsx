@@ -70,7 +70,6 @@ const SplashScreen = ({ modelLoaded = false, onFinish }) => {
         src="/assets/splash.mp4"
         muted
         playsInline
-        loop
         preload="auto"
         style={{
           position:   'absolute',

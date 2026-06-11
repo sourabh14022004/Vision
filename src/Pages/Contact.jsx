@@ -89,23 +89,23 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-white pt-32 pb-24 px-4 flex items-center justify-center relative overflow-hidden select-none">
+    <div className="min-h-screen bg-[#0a0a0a] text-white pt-32 pb-24 px-4 flex items-center justify-center relative overflow-hidden select-none">
       
-      {/* Decorative ambient glowing circles - customized to gorgeous blue shades instead of green */}
-      <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-900/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-blue-600/10 blur-[150px] pointer-events-none" />
+      {/* Decorative ambient glowing circles - customized to subtle, gorgeous blue/indigo shades */}
+      <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-900/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-blue-600/5 blur-[150px] pointer-events-none" />
 
       {/* The main contact card */}
       <div
         className="w-full max-w-6xl rounded-3xl p-8 md:p-14 relative overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16"
         style={{
-          background: 'linear-gradient(145deg, #10121a 0%, #0c0d12 100%)',
+          background: '#0d0d0d',
           border: '1px solid rgba(255, 255, 255, 0.05)',
           boxShadow: '0 24px 64px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.03)',
         }}
       >
         {/* Glow accent overlay inside the card (bottom-left corner) - vibrant blue shade */}
-        <div className="absolute bottom-[-150px] left-[-150px] w-[350px] h-[350px] rounded-full bg-blue-500/25 blur-[90px] pointer-events-none" />
+        <div className="absolute bottom-[-150px] left-[-150px] w-[350px] h-[350px] rounded-full bg-blue-500/10 blur-[90px] pointer-events-none" />
 
         {/* LEFT COLUMN */}
         <div className="lg:col-span-5 flex flex-col justify-between relative z-10 space-y-12">
