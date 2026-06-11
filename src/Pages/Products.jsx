@@ -40,7 +40,7 @@ const MODELS = [
     range: '55 km',
     speed: '40 km/h',
     tag: 'Best Seller',
-    image: 'src/assets/Moone-kickscooter3.webp',
+    image: '/assets/Moone-kickscooter3.webp',
     accent: '#3b82f6',
   },
   {
@@ -51,7 +51,7 @@ const MODELS = [
     range: '65 km',
     speed: '45 km/h',
     tag: 'New',
-    image: 'src/assets/71+l5z4101L.jpg',
+    image: '/assets/71+l5z4101L.jpg',
     accent: '#10b981',
   },
   {
@@ -73,7 +73,7 @@ const MODELS = [
     range: '70 km',
     speed: '50 km/h',
     tag: 'Top Rated',
-    image: 'src/assets/E-Scooter-with-Digital-Meter-with-Quick-Card-Start-Electric-Scooter-with-Dual-Shock-Absorbers-48v-18Ah-Price-in-Pakistan-1.jpg',
+    image: '/assets/E-Scooter-with-Digital-Meter-with-Quick-Card-Start-Electric-Scooter-with-Dual-Shock-Absorbers-48v-18Ah-Price-in-Pakistan-1.jpg',
     accent: '#ef4444',
   },
 ];
