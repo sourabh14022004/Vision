@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
         tag = 'Newly Launched',
         rating = 4,
         name = 'Version V0',
-        image = 'src/assets/versionV1.png',
+        image = '/assets/versionV1.png',
         description = 'Version V0 is the debut model of our cutting-edge e-scooter series, designed to redefine urban mobility. With a sleek, futuristic design and intuitive performance, it offers a perfect blend of style, speed, and sustainability. Ideal for daily commutes or city adventures, Version V0 delivers a smooth, eco-friendly ride while turning heads with its distinctive aesthetic',
         range = 50,
         topSpeed = 45,

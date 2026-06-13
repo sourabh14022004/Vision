@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import versionVo from '../assets/versionVo.png';
-import versionV1 from '../assets/versionV1.png';
 
 /* ─── data ─────────────────────────────────────────────── */
 const FEATURED = {
@@ -19,7 +17,7 @@ const FEATURED = {
     { id: 'arctic',   hex: '#c8d4dc', label: 'Arctic White'  },
     { id: 'cobalt',   hex: '#1e4dab', label: 'Cobalt Blue'   },
   ],
-  image: versionVo,
+  image: '/assets/versionVo.png',
 };
 
 const SPECS = [
@@ -62,7 +60,7 @@ const MODELS = [
     range: '40 km',
     speed: '35 km/h',
     tag: '',
-    image: versionV1,
+    image: '/assets/versionV1.png',
     accent: '#f59e0b',
   },
   {
@@ -341,7 +339,7 @@ const Products = () => {
 
         {/* Right scooter image */}
         <motion.img
-          src={versionV1}
+          src="/assets/versionV1.png"
           alt="Version V1"
           initial={{ opacity: 0, x: 80 }}
           whileInView={{ opacity: 1, x: 0 }}

@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import scooterImg from '../assets/versionVo.png';
-import scooterImg2 from '../assets/versionV1.png';
 import ScooterModel from "../Components/Spline3dModel.jsx";
 import {
     BatteryCharging,
@@ -1064,7 +1062,7 @@ const Hero = () => {
                             <div className="relative z-10 w-full max-w-sm md:max-w-md lg:max-w-lg flex justify-center">
                                 <img
                                     ref={scooterImgRef}
-                                    src={scooterImg}
+                                    src="/assets/versionVo.png"
                                     alt="Version V0 Electric Scooter"
                                     className="w-full h-auto object-contain scale-125 md:scale-150 drop-shadow-2xl"
                                     style={{ opacity: 0 }}
@@ -1165,7 +1163,7 @@ const Hero = () => {
                                     GO TO CATALOG
                                 </button>
                             </div>
-                            <img src={scooterImg} alt="Scooter Wheel" className="absolute -right-10 top-1/2 -translate-y-1/2 w-64 md:w-80 object-cover group-hover:scale-110 transition-transform duration-700" />
+                            <img src="/assets/versionVo.png" alt="Scooter Wheel" className="absolute -right-10 top-1/2 -translate-y-1/2 w-64 md:w-80 object-cover group-hover:scale-110 transition-transform duration-700" />
                         </motion.div>
 
                         {/* Light Card */}

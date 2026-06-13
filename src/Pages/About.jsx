@@ -1,6 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import aboutImg from '../assets/versionVo.png';
-import scooterV1 from '../assets/versionV1.png';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const fadeUp = {
@@ -85,7 +83,7 @@ const About = () => {
           className="absolute right-0 bottom-0 w-[55%] md:w-[42%] pointer-events-none z-20"
         >
           <motion.img
-            src={aboutImg}
+            src="/assets/versionVo.png"
             alt="Version V0 Electric Scooter"
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
@@ -219,7 +217,7 @@ const About = () => {
           {/* Right: scooter V1 image + floating badges */}
           <div className="relative flex items-center justify-center">
             <motion.img
-              src={scooterV1}
+              src="/assets/versionV1.png"
               alt="Version V1"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
