@@ -10,3 +10,23 @@ html {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* ── Performance: GPU-accelerate scroll-heavy elements ───────────────── */
+
+/* Sticky containers repaint on every scroll frame — promote to GPU layer */
+.sticky {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Videos are heavy compositing targets — promote to own layer */
+video {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Backdrop-filter triggers expensive per-frame blur calculations */
+[style*="backdrop-filter"] {
+  will-change: transform;
+  transform: translateZ(0);
+}

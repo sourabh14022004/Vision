@@ -7,42 +7,65 @@ const Header = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const path = location.pathname;
+
+    if (path === '/contact' || path === '/about' || path === '/products') {
+      setIsLightMode(false);
+      return;
+    }
+
+    if (path !== '/') {
+      setIsLightMode(false);
+      return;
+    }
+
+    // Cache the light-section element so we don't querySelector on every scroll
+    let lightSectionRef = null;
+    let lightSectionTop = null;
+    let rafId = null;
+
+    const cacheLightSection = () => {
+      lightSectionRef = document.querySelector('section.bg-white');
+      if (lightSectionRef) {
+        lightSectionTop = lightSectionRef.getBoundingClientRect().top + window.scrollY;
+      }
+    };
+
+    // Initial cache — defer slightly so the DOM is ready
+    cacheLightSection();
+
     const handleTheme = () => {
-      const path = location.pathname;
-      if (path === '/contact' || path === '/about' || path === '/products') {
-        setIsLightMode(false);
-      } else if (path === '/') {
-        // Dynamically find the first light (bg-white) section — ProductReview
-        // so threshold automatically adjusts when new sections are added above it.
-        const lightSection = document.querySelector('section.bg-white');
-        if (lightSection) {
-          const sectionTop = lightSection.getBoundingClientRect().top + window.scrollY;
-          // Switch to light when the top of the light section is within the top-half of the viewport
-          if (window.scrollY + window.innerHeight * 0.25 >= sectionTop) {
-            setIsLightMode(true);
-          } else {
-            setIsLightMode(false);
-          }
-        } else {
-          setIsLightMode(false);
-        }
+      if (lightSectionRef && lightSectionTop !== null) {
+        setIsLightMode(window.scrollY + window.innerHeight * 0.25 >= lightSectionTop);
       } else {
         setIsLightMode(false);
       }
     };
 
-    // Run initial theme check
+    // Throttle to one call per animation frame
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        handleTheme();
+        rafId = null;
+      });
+    };
+
     handleTheme();
 
-    // Listen to scroll events if on Home page
-    if (location.pathname === '/') {
-      window.addEventListener('scroll', handleTheme, { passive: true });
-      window.addEventListener('resize', handleTheme, { passive: true });
-      return () => {
-        window.removeEventListener('scroll', handleTheme);
-        window.removeEventListener('resize', handleTheme);
-      };
-    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Recalculate cached position on resize
+    const onResize = () => {
+      cacheLightSection();
+      handleTheme();
+    };
+    window.addEventListener('resize', onResize, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [location.pathname]);
 
   return (

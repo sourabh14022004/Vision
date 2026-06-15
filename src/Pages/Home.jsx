@@ -117,24 +117,33 @@ function ScrollText() {
         const hero = document.getElementById('hero-scroll-wrapper');
         if (!hero) return;
 
+        let rafId = null;
+
         const onScroll = () => {
-            const rect = hero.getBoundingClientRect();
-            const scrolled = -rect.top;
-            const total = rect.height - window.innerHeight;
-            const progress = Math.max(0, Math.min(1, scrolled / total));
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => {
+                const rect = hero.getBoundingClientRect();
+                const scrolled = -rect.top;
+                const total = rect.height - window.innerHeight;
+                const progress = Math.max(0, Math.min(1, scrolled / total));
 
-            setVisible(progress < 0.999);
+                setVisible(progress < 0.999);
 
-            const idx = Math.min(
-                SCROLL_TEXTS.length - 1,
-                Math.floor(progress / SLOT)
-            );
-            setActiveIdx(idx);
+                const idx = Math.min(
+                    SCROLL_TEXTS.length - 1,
+                    Math.floor(progress / SLOT)
+                );
+                setActiveIdx(idx);
+                rafId = null;
+            });
         };
 
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
-        return () => window.removeEventListener('scroll', onScroll);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     }, [pathname]);
 
     if (!visible) return null;
@@ -255,20 +264,24 @@ function HandlebarFeature() {
     const videoRef  = useRef(null);
     const textRef   = useRef(null);
 
-    // Auto-play video when it enters the viewport
+    // Lazy-load + auto-play video when it approaches the viewport
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
+        const videoSrc = '/assets/Handlebars.mp4';
 
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
+                    if (!video.src || !video.src.endsWith(videoSrc)) {
+                        video.src = videoSrc;
+                    }
                     video.play().catch(() => {});
                 } else {
                     video.pause();
                 }
             },
-            { threshold: 0.25 }
+            { threshold: 0.1, rootMargin: '100% 0px' }
         );
         observer.observe(video);
         return () => observer.disconnect();
@@ -291,11 +304,10 @@ function HandlebarFeature() {
             <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', lineHeight: 0 }}>
                 <video
                     ref={videoRef}
-                    src="/assets/Handlebars.mp4"
                     muted
                     playsInline
                     loop
-                    preload="metadata"
+                    preload="none"
                     style={{
                         width: '100%',
                         height: '100%',
@@ -455,12 +467,19 @@ function InstrumentClusterFeature() {
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
+        const videoSrc = '/assets/Instrument_Cluster.mp4';
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) video.play().catch(() => {});
-                else video.pause();
+                if (entry.isIntersecting) {
+                    if (!video.src || !video.src.endsWith(videoSrc)) {
+                        video.src = videoSrc;
+                    }
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
             },
-            { threshold: 0.25 }
+            { threshold: 0.1, rootMargin: '100% 0px' }
         );
         observer.observe(video);
         return () => observer.disconnect();
@@ -472,11 +491,10 @@ function InstrumentClusterFeature() {
             <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', lineHeight: 0 }}>
                 <video
                     ref={videoRef}
-                    src="/assets/Instrument_Cluster.mp4"
                     muted
                     playsInline
                     loop
-                    preload="metadata"
+                    preload="none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
 
@@ -628,12 +646,19 @@ function FrontWheelFeature() {
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
+        const videoSrc = '/assets/front_wheel.mp4';
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) video.play().catch(() => {});
-                else video.pause();
+                if (entry.isIntersecting) {
+                    if (!video.src || !video.src.endsWith(videoSrc)) {
+                        video.src = videoSrc;
+                    }
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
             },
-            { threshold: 0.25 }
+            { threshold: 0.1, rootMargin: '100% 0px' }
         );
         observer.observe(video);
         return () => observer.disconnect();
@@ -644,11 +669,10 @@ function FrontWheelFeature() {
             <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', lineHeight: 0 }}>
                 <video
                     ref={videoRef}
-                    src="/assets/front_wheel.mp4"
                     muted
                     playsInline
                     loop
-                    preload="metadata"
+                    preload="none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
 
@@ -799,12 +823,19 @@ function RearWheelFeature() {
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
+        const videoSrc = '/assets/Rear_Wheel.mp4';
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) video.play().catch(() => {});
-                else video.pause();
+                if (entry.isIntersecting) {
+                    if (!video.src || !video.src.endsWith(videoSrc)) {
+                        video.src = videoSrc;
+                    }
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
             },
-            { threshold: 0.25 }
+            { threshold: 0.1, rootMargin: '100% 0px' }
         );
         observer.observe(video);
         return () => observer.disconnect();
@@ -815,11 +846,10 @@ function RearWheelFeature() {
             <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', lineHeight: 0 }}>
                 <video
                     ref={videoRef}
-                    src="/assets/Rear_Wheel.mp4"
                     muted
                     playsInline
                     loop
-                    preload="metadata"
+                    preload="none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
 
@@ -986,16 +1016,19 @@ const Hero = () => {
         const section = featuresRef.current;
         if (!section) return;
 
+        // Track all ScrollTriggers created in this effect for proper cleanup
+        const trackedTriggers = [];
+
         // ── Scooter image entrance animation ─────────────────────────────
         const img = scooterImgRef.current;
         if (img) {
             gsap.set(img, { opacity: 0, scale: 0.88, y: 24 });
-            ScrollTrigger.create({
+            trackedTriggers.push(ScrollTrigger.create({
                 trigger: section,
                 start: 'top 80%',
                 onEnter: () => gsap.to(img, { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: 'power3.out' }),
                 onLeaveBack: () => gsap.to(img, { opacity: 0, scale: 0.88, y: 24, duration: 0.5, ease: 'power2.in' }),
-            });
+            }));
         }
 
         // ── Feature badge animations ──────────────────────────────────────
@@ -1006,22 +1039,21 @@ const Hero = () => {
             { ref: feat4Ref, start: '70%', fromX:  30 },
         ];
 
-        const sts = badges.map(({ ref, start, fromX }) => {
-            if (!ref.current) return null;
+        badges.forEach(({ ref, start, fromX }) => {
+            if (!ref.current) return;
             gsap.set(ref.current, { opacity: 0, x: fromX });
-            return ScrollTrigger.create({
+            trackedTriggers.push(ScrollTrigger.create({
                 trigger:  section,
                 start:    `top+=${parseFloat(start) / 100 * (section.scrollHeight - window.innerHeight)}px top`,
                 end:      `top+=${(parseFloat(start) / 100 + 0.18) * (section.scrollHeight - window.innerHeight)}px top`,
                 scrub:    false,
                 onEnter:  () => gsap.to(ref.current, { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' }),
                 onLeaveBack: () => gsap.to(ref.current, { opacity: 0, x: fromX, duration: 0.4, ease: 'power2.in' }),
-            });
+            }));
         });
 
         return () => {
-            sts.forEach(st => st?.kill());
-            ScrollTrigger.getAll().forEach(st => st.kill());
+            trackedTriggers.forEach(st => st.kill());
         };
     }, [pathname]);
 

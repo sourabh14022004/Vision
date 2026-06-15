@@ -16,7 +16,7 @@ import { useEffect } from 'react';
  * @param {number}  threshold  Fraction (0–1) defining the snap zones. Default 0.15.
  * @param {number}  debounceMs How long after the last scroll event to trigger the snap check.
  */
-export function useSnapScroll(selector = '[data-snap]', threshold = 0.15, debounceMs = 180) {
+export function useSnapScroll(selector = '[data-snap]', threshold = 0.15, debounceMs = 250) {
     useEffect(() => {
         let isSnapping = false;
         let timer = null;
@@ -59,10 +59,12 @@ export function useSnapScroll(selector = '[data-snap]', threshold = 0.15, deboun
                     }
                 }
 
-                // Allow new snaps after the smooth-scroll animation settles (~700 ms).
-                setTimeout(() => {
-                    isSnapping = false;
-                }, 700);
+                // Allow new snaps after the smooth-scroll animation settles (~900 ms).
+                if (isSnapping) {
+                    setTimeout(() => {
+                        isSnapping = false;
+                    }, 900);
+                }
             }, debounceMs);
         }
 

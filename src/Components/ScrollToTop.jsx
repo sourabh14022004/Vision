@@ -21,14 +21,22 @@ export default function ScrollToTop() {
     }
   }, []);
 
-  // 2. Cache scroll positions on user scroll events
+  // 2. Cache scroll positions on user scroll events (throttled with RAF)
   useEffect(() => {
+    let rafId = null;
     const handleScroll = () => {
-      scrollPositions.current[pathname] = window.scrollY;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        scrollPositions.current[pathname] = window.scrollY;
+        rafId = null;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [pathname]);
 
   // 3. Handle scroll restoration on pathname change (restores cached position or defaults to 0)

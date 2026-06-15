@@ -56,7 +56,7 @@ export default function VaporizeTextCycle({
   const transformedDensity = transformValue(density, [0, 10], [0.3, 1], true);
 
   const globalDpr = useMemo(() => {
-    if (typeof window !== "undefined") return window.devicePixelRatio * 1.5 || 1;
+    if (typeof window !== "undefined") return Math.min(window.devicePixelRatio || 1, 2);
     return 1;
   }, []);
 
@@ -543,12 +543,14 @@ const updateParticles = (
 const renderParticles = (ctx, particles, globalDpr) => {
   ctx.save();
   ctx.scale(globalDpr, globalDpr);
-  particles.forEach((particle) => {
-    if (particle.opacity > 0) {
-      ctx.fillStyle = particle.color.replace(/[\d.]+\)$/, `${particle.opacity})`);
-      ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1, 1);
+  const invDpr = 1 / globalDpr;
+  for (let i = 0, len = particles.length; i < len; i++) {
+    const p = particles[i];
+    if (p.opacity > 0.01) {
+      ctx.fillStyle = p.color.replace(/[\d.]+\)$/, `${p.opacity})`);
+      ctx.fillRect(p.x * invDpr, p.y * invDpr, 1, 1);
     }
-  });
+  }
   ctx.restore();
 };
 
@@ -612,7 +614,7 @@ function useIsInView(ref) {
     if (!ref.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0, rootMargin: "50px" }
+      { threshold: 0, rootMargin: "0px" }
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
