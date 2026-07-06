@@ -184,17 +184,17 @@ const socialLinks = [
 // ── Main Footer ───────────────────────────────────────────────────────────────
 function Footer() {
   return (
-    <footer className="bg-[#0F0F11] relative h-fit rounded-3xl overflow-hidden m-8">
-      <div className="max-w-7xl mx-auto p-14 z-40 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8 lg:gap-16 pb-12">
+    <footer className="bg-[#0F0F11] relative h-fit overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 py-8 md:px-10 md:py-12 z-40 relative">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-8 lg:gap-14 pb-8 md:pb-10">
 
-          {/* Brand section */}
-          <div className="flex flex-col space-y-4">
+          {/* Brand section — full width on mobile */}
+          <div className="col-span-2 md:col-span-1 flex flex-col space-y-3">
             <div className="flex items-center space-x-2">
-              <span className="text-[#3ca2fa] text-3xl font-extrabold">&hearts;</span>
-              <span className="text-white text-3xl font-bold">Vishion</span>
+              <span className="text-[#3ca2fa] text-2xl md:text-3xl font-extrabold">&hearts;</span>
+              <span className="text-white text-2xl md:text-3xl font-bold">Vishion</span>
             </div>
-            <p className="text-sm leading-relaxed text-gray-400">
+            <p className="text-xs md:text-sm leading-relaxed text-gray-400 max-w-[300px]">
               Vishion is a next-generation electric scooter brand. Clean, fast, and smart — built for the streets.
             </p>
           </div>
@@ -202,15 +202,15 @@ function Footer() {
           {/* Footer link sections */}
           {footerLinks.map((section) => (
             <div key={section.title}>
-              <h4 className="text-white text-lg font-semibold mb-6">
+              <h4 className="text-white text-sm md:text-base font-semibold mb-3 md:mb-5">
                 {section.title}
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2 md:space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label} className="relative">
                     <Link
                       to={link.href}
-                      className="text-gray-400 hover:text-[#3ca2fa] transition-colors text-sm"
+                      className="text-gray-400 hover:text-[#3ca2fa] transition-colors text-xs md:text-sm"
                     >
                       {link.label}
                     </Link>
@@ -225,20 +225,20 @@ function Footer() {
 
           {/* Contact section */}
           <div>
-            <h4 className="text-white text-lg font-semibold mb-6">Contact Us</h4>
-            <ul className="space-y-4">
+            <h4 className="text-white text-sm md:text-base font-semibold mb-3 md:mb-5">Contact Us</h4>
+            <ul className="space-y-3">
               {contactInfo.map((item, i) => (
                 <li key={i} className="flex items-center space-x-3">
                   {item.icon}
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="text-gray-400 hover:text-[#3ca2fa] transition-colors text-sm"
+                      className="text-gray-400 hover:text-[#3ca2fa] transition-colors text-xs md:text-sm"
                     >
                       {item.text}
                     </a>
                   ) : (
-                    <span className="text-gray-400 hover:text-[#3ca2fa] transition-colors text-sm">
+                    <span className="text-gray-400 hover:text-[#3ca2fa] transition-colors text-xs md:text-sm">
                       {item.text}
                     </span>
                   )}
@@ -248,12 +248,12 @@ function Footer() {
           </div>
         </div>
 
-        <hr className="border-t border-gray-700 my-8" />
+        <hr className="border-t border-gray-700/50 my-5 md:my-6" />
 
         {/* Footer bottom */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row justify-between items-center text-xs md:text-sm space-y-3 md:space-y-0">
           {/* Social icons */}
-          <div className="flex space-x-6 text-gray-400">
+          <div className="flex space-x-5 text-gray-400">
             {socialLinks.map(({ icon, label, href }) => (
               <a
                 key={label}
@@ -273,8 +273,8 @@ function Footer() {
         </div>
       </div>
 
-      {/* Text hover effect — exact demo sizing */}
-      <div className="lg:flex hidden h-[35rem] -mt-52 -mb-36">
+      {/* Text hover effect — compact, desktop only */}
+      <div className="lg:flex hidden h-[20rem] -mt-32 -mb-20">
         <TextHoverEffect text="Vishion" className="z-50"/>
       </div>
 

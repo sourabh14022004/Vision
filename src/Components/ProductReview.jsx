@@ -53,21 +53,21 @@ const ProductReview = () => {
       : reviews.filter((r) => r.rating === parseInt(selectedRating));
 
   return (
-    <section className="bg-white py-20 px-4 md:px-8">
+    <section className="bg-white py-12 sm:py-20 px-4 md:px-8">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
           What Our Customers Say
         </h2>
 
-        <div className="flex justify-center items-center gap-4 mb-10">
-          <label htmlFor="ratingFilter" className="text-sm font-medium">
+        <div className="flex justify-center items-center gap-3 sm:gap-4 mb-6 sm:mb-10">
+          <label htmlFor="ratingFilter" className="text-xs sm:text-sm font-medium">
             Filter by Rating:
           </label>
           <select
             id="ratingFilter"
             value={selectedRating}
             onChange={(e) => setSelectedRating(e.target.value)}
-            className="border px-3 py-2 rounded-md shadow-sm"
+            className="border px-2 sm:px-3 py-1.5 sm:py-2 rounded-md shadow-sm text-sm"
           >
             <option value="All">All</option>
             <option value="5">5 Stars</option>
@@ -78,38 +78,38 @@ const ProductReview = () => {
           </select>
         </div>
 
-        <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredReviews.map((review, index) => (
             <motion.div
               key={review.id}
-              className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg transition"
+              className="bg-gray-50 p-5 sm:p-6 rounded-xl shadow hover:shadow-lg transition"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               custom={index}
               variants={fadeUp}
             >
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
                 <img
                   src={review.avatar}
                   alt={review.name}
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
                 />
                 <div className="text-left">
-                  <p className="font-semibold text-gray-800">{review.name}</p>
-                  <p className="text-sm text-gray-500">{review.location}</p>
+                  <p className="font-semibold text-sm sm:text-base text-gray-800">{review.name}</p>
+                  <p className="text-xs sm:text-sm text-gray-500">{review.location}</p>
                 </div>
               </div>
-              <div className="text-yellow-500 text-lg mb-2">
+              <div className="text-yellow-500 text-base sm:text-lg mb-2">
                 {'★'.repeat(review.rating)}
                 {'☆'.repeat(5 - review.rating)}
               </div>
-              <p className="text-gray-700 italic">"{review.comment}"</p>
+              <p className="text-gray-700 italic text-sm sm:text-base">"{review.comment}"</p>
             </motion.div>
           ))}
         </div>
 
-        <button className="mt-12 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+        <button className="mt-8 sm:mt-12 bg-blue-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-blue-700 transition text-sm sm:text-base">
           Write a Review
         </button>
       </div>

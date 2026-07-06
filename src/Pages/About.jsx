@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const fadeUp = {
@@ -9,6 +9,67 @@ const fadeUp = {
     transition: { delay: i * 0.12, duration: 0.65, ease: [0.22, 1, 0.36, 1] },
   }),
 };
+
+// ── Count-up hook ──────────────────────────────────────────────────────────────
+// Parses a value string like '25K+', '99.9%', '60km', '150+' into
+// a numeric target + a suffix, then animates from 0 → target on mount.
+function useCountUp(valueStr, duration = 1800) {
+  // Extract leading number (int or float) and everything after it as suffix
+  const match = valueStr.match(/^(\d+\.?\d*)(.*)$/);
+  const target  = match ? parseFloat(match[1]) : 0;
+  const suffix  = match ? match[2] : valueStr;
+  const isFloat = valueStr.includes('.');
+
+  const [count, setCount]     = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started) {
+          setStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [started]);
+
+  useEffect(() => {
+    if (!started) return;
+    let startTime = null;
+    let raf;
+    const step = (ts) => {
+      if (!startTime) startTime = ts;
+      const elapsed  = ts - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutExpo
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = eased * target;
+      setCount(isFloat ? parseFloat(current.toFixed(1)) : Math.floor(current));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [started, target, duration, isFloat]);
+
+  return { ref, display: `${isFloat ? count.toFixed(1) : count}${suffix}` };
+}
+
+// Renders one animated stat with a shimmer flash on completion
+function AnimatedStat({ value, delay = 0 }) {
+  const { ref, display } = useCountUp(value, 1600);
+  return (
+    <span ref={ref} style={{ display: 'inline-block', transition: 'none' }}>
+      {display}
+    </span>
+  );
+}
 
 const About = () => {
   const heroRef = useRef(null);
@@ -286,7 +347,9 @@ const About = () => {
                 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i * 0.5}
                 className="bg-[#0d0d0d] px-8 py-12 group hover:bg-white/[0.02] transition-colors duration-300"
               >
-                <p className="font-black text-white leading-none mb-3" style={{ fontSize: 'clamp(36px, 4vw, 72px)' }}>{stat.value}</p>
+                <p className="font-black text-white leading-none mb-3" style={{ fontSize: 'clamp(36px, 4vw, 72px)' }}>
+                  <AnimatedStat value={stat.value} delay={i * 0.3} />
+                </p>
                 <p className="text-white/70 text-sm font-semibold tracking-wide mb-1">{stat.label}</p>
                 <p className="text-white/25 text-xs font-mono tracking-wider uppercase">{stat.sub}</p>
               </motion.div>

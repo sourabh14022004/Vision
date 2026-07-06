@@ -152,8 +152,8 @@ function ScrollText() {
 
     return (
         <div
-            className="absolute left-4 sm:left-8 md:left-16 top-1/2 -translate-y-1/2 z-20 pointer-events-none select-none"
-            style={{ maxWidth: 'min(360px, 55vw)' }}
+            className="absolute left-4 sm:left-8 md:left-16 bottom-[15%] sm:top-1/2 sm:-translate-y-1/2 z-20 pointer-events-none select-none"
+            style={{ maxWidth: 'min(360px, 85vw)' }}
         >
             <TypewriterCard item={item} activeIdx={activeIdx} />
         </div>
@@ -171,11 +171,11 @@ function TypewriterCard({ item, activeIdx }) {
             <p
                 style={{
                     fontFamily: 'monospace',
-                    fontSize: '0.7rem',
+                    fontSize: '0.6rem',
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
                     color: 'rgba(96,165,250,0.9)',
-                    marginBottom: '18px',
+                    marginBottom: '12px',
                     minHeight: '1em',
                     fontWeight: 500,
                 }}
@@ -190,14 +190,14 @@ function TypewriterCard({ item, activeIdx }) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.45, ease: 'easeOut' }}
-                style={{ height: '5.5rem', pointerEvents: 'none', marginBottom: '20px' }}
+                style={{ height: '4rem', pointerEvents: 'none', marginBottom: '14px' }}
             >
                 <VaporizeTextCycle
                     texts={SCROLL_TEXTS.map(t => t.heading)}
                     externalTextIndex={activeIdx}
                     font={{
                         fontFamily: 'Inter, sans-serif',
-                        fontSize: '32px',
+                        fontSize: window.innerWidth < 640 ? '22px' : '32px',
                         fontWeight: 700,
                     }}
                     color="rgb(255, 255, 255)"
@@ -222,10 +222,10 @@ function TypewriterCard({ item, activeIdx }) {
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ delay: 0.85, duration: 0.35, ease: 'easeOut' }}
                     style={{
-                        fontSize: '0.9rem',
+                        fontSize: '0.8rem',
                         color: 'rgba(209,213,219,0.85)',
-                        lineHeight: '1.8',
-                        minHeight: '4.5rem',
+                        lineHeight: '1.7',
+                        minHeight: '3.5rem',
                         fontFamily: "'Inter', sans-serif",
                         fontWeight: 400,
                     }}
@@ -236,7 +236,7 @@ function TypewriterCard({ item, activeIdx }) {
             </AnimatePresence>
 
             {/* Progress — simple dashes like screenshot */}
-            <div style={{ display: 'flex', gap: '8px', marginTop: '24px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '6px', marginTop: '16px', alignItems: 'center' }}>
                 {SCROLL_TEXTS.map((_, i) => (
                     <span
                         key={i}
@@ -350,14 +350,14 @@ function HandlebarFeature() {
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                         position: 'absolute',
-                        bottom: 'clamp(80px, 16%, 180px)',
+                        bottom: 'clamp(55px, 14%, 180px)',
                         left: '0',
                         right: '0',
-                        padding: '0 5% 0 5%',
+                        padding: '0 4% 0 4%',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '10px',
-                        maxWidth: 'min(640px, 90vw)',
+                        gap: '8px',
+                        maxWidth: 'min(640px, 92vw)',
                         lineHeight: 'normal',
                     }}
                 >
@@ -999,7 +999,7 @@ function RearWheelFeature() {
 
 const Hero = () => {
     const featuresRef = useRef(null);
-    const scooterImgRef = useRef(null);
+    const videoRef = useRef(null);
     const { pathname } = useLocation();
 
     // Snap-scroll: auto-complete any feature video section if ≥85% scrolled through
@@ -1019,16 +1019,44 @@ const Hero = () => {
         // Track all ScrollTriggers created in this effect for proper cleanup
         const trackedTriggers = [];
 
-        // ── Scooter image entrance animation ─────────────────────────────
-        const img = scooterImgRef.current;
-        if (img) {
-            gsap.set(img, { opacity: 0, scale: 0.88, y: 24 });
+        // ── Scooter video entrance animation & scroll scrubbing ───────────
+        const video = videoRef.current;
+        if (video) {
+            gsap.set(video, { opacity: 0, scale: 0.88, y: 24 });
+            
+            // Entrance animation
             trackedTriggers.push(ScrollTrigger.create({
                 trigger: section,
                 start: 'top 80%',
-                onEnter: () => gsap.to(img, { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: 'power3.out' }),
-                onLeaveBack: () => gsap.to(img, { opacity: 0, scale: 0.88, y: 24, duration: 0.5, ease: 'power2.in' }),
+                onEnter: () => gsap.to(video, { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: 'power3.out' }),
+                onLeaveBack: () => gsap.to(video, { opacity: 0, scale: 0.88, y: 24, duration: 0.5, ease: 'power2.in' }),
             }));
+
+            // Scroll-driven scrubbing
+            const setupVideoScrub = () => {
+                if (!video.duration || isNaN(video.duration)) return;
+                
+                trackedTriggers.push(ScrollTrigger.create({
+                    trigger: section,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.5,
+                    animation: gsap.to(video, {
+                        currentTime: video.duration,
+                        ease: 'none',
+                    })
+                }));
+            };
+
+            if (video.readyState >= 1) {
+                setupVideoScrub();
+            } else {
+                const onMetadata = () => {
+                    setupVideoScrub();
+                    video.removeEventListener('loadedmetadata', onMetadata);
+                };
+                video.addEventListener('loadedmetadata', onMetadata);
+            }
         }
 
         // ── Feature badge animations ──────────────────────────────────────
@@ -1081,22 +1109,48 @@ const Hero = () => {
                     <div className="max-w-7xl w-full mx-auto">
                         {/* Header */}
                         <div className="text-center mb-10 relative z-20">
-                            <h2 className="text-3xl md:text-5xl font-light text-white tracking-wide">
-                                ONLINE STORE <br />
-                                <strong className="font-bold">SCOOTERS</strong>
+                            <p style={{
+                                fontFamily: 'monospace',
+                                fontSize: '0.65rem',
+                                letterSpacing: '0.22em',
+                                textTransform: 'uppercase',
+                                color: 'rgba(96,165,250,0.85)',
+                                fontWeight: 500,
+                                marginBottom: '10px',
+                            }}>
+                                04 — COLLECTION
+                            </p>
+                            <h2 style={{
+                                fontFamily: "'Inter', sans-serif",
+                                fontWeight: 900,
+                                fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+                                lineHeight: 1,
+                                letterSpacing: '-0.025em',
+                                color: '#ffffff',
+                                margin: 0,
+                            }}>
+                                ONLINE STORE{' '}
+                                <span style={{
+                                    color: 'transparent',
+                                    WebkitTextStroke: '1.5px rgba(255,255,255,0.35)',
+                                }}>
+                                    SCOOTERS
+                                </span>
                             </h2>
                         </div>
 
                         {/* Central Interactive Area */}
-                        <div className="relative border border-white/10 rounded-3xl bg-[#222222]/80 backdrop-blur-md p-6 md:p-10 min-h-[500px] flex items-center justify-center">
+                        <div className="relative border border-white/10 rounded-3xl bg-[#222222]/80 backdrop-blur-md overflow-hidden min-h-[350px] md:min-h-[500px] flex items-center justify-center">
                             
-                            {/* Central Scooter Image — clean, smooth entrance via GSAP */}
-                            <div className="relative z-10 w-full max-w-sm md:max-w-md lg:max-w-lg flex justify-center">
-                                <img
-                                    ref={scooterImgRef}
-                                    src="/assets/versionVo.png"
-                                    alt="Version V0 Electric Scooter"
-                                    className="w-full h-auto object-contain scale-125 md:scale-150 drop-shadow-2xl"
+                            {/* Central Scooter Video — scrubbed by GSAP on scroll, fills the card */}
+                            <div className="relative z-10 w-full h-full flex justify-center">
+                                <video
+                                    ref={videoRef}
+                                    src="/assets/360.mp4"
+                                    playsInline
+                                    muted
+                                    preload="auto"
+                                    className="w-full h-full object-contain drop-shadow-2xl pointer-events-none"
                                     style={{ opacity: 0 }}
                                 />
                             </div>
@@ -1105,14 +1159,14 @@ const Hero = () => {
                             {/* 1. Top Left — Speed */}
                             <div
                                 ref={feat1Ref}
-                                className="absolute top-[15%] left-[5%] md:left-[10%] text-white flex items-center gap-4 cursor-pointer group z-20"
+                                className="absolute top-[12%] sm:top-[15%] left-[3%] md:left-[10%] text-white flex items-center gap-2 sm:gap-4 cursor-pointer group z-20"
                             >
-                                <div className="text-right hidden sm:block">
-                                    <p className="font-bold text-lg">45 km/h</p>
-                                    <p className="text-xs text-gray-400">Top Speed</p>
+                                <div className="text-right">
+                                    <p className="font-bold text-sm sm:text-lg">45 km/h</p>
+                                    <p className="text-[10px] sm:text-xs text-gray-400">Top Speed</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
-                                    <Gauge className="w-5 h-5" />
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
+                                    <Gauge className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div className="hidden lg:block absolute left-full top-1/2 w-16 h-px bg-gradient-to-r from-white/30 to-transparent -translate-y-1/2" />
                             </div>
@@ -1120,14 +1174,14 @@ const Hero = () => {
                             {/* 2. Bottom Left — Range */}
                             <div
                                 ref={feat2Ref}
-                                className="absolute bottom-[20%] left-[5%] md:left-[5%] text-white flex items-center gap-4 cursor-pointer group z-20"
+                                className="absolute bottom-[18%] sm:bottom-[20%] left-[3%] md:left-[5%] text-white flex items-center gap-2 sm:gap-4 cursor-pointer group z-20"
                             >
-                                <div className="text-right hidden sm:block">
-                                    <p className="font-bold text-lg">60 km</p>
-                                    <p className="text-xs text-gray-400">Range per charge</p>
+                                <div className="text-right">
+                                    <p className="font-bold text-sm sm:text-lg">60 km</p>
+                                    <p className="text-[10px] sm:text-xs text-gray-400">Range per charge</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
-                                    <Repeat className="w-5 h-5" />
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
+                                    <Repeat className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div className="hidden lg:block absolute left-full top-1/2 w-24 h-px bg-gradient-to-r from-white/30 to-transparent -translate-y-1/2 -rotate-[15deg] origin-left" />
                             </div>
@@ -1135,14 +1189,14 @@ const Hero = () => {
                             {/* 3. Top Right — Display */}
                             <div
                                 ref={feat3Ref}
-                                className="absolute top-[25%] right-[5%] md:right-[10%] text-white flex items-center flex-row-reverse gap-4 cursor-pointer group z-20"
+                                className="absolute top-[22%] sm:top-[25%] right-[3%] md:right-[10%] text-white flex items-center flex-row-reverse gap-2 sm:gap-4 cursor-pointer group z-20"
                             >
-                                <div className="text-left hidden sm:block">
-                                    <p className="font-bold text-lg">Smart Dash</p>
-                                    <p className="text-xs text-gray-400">Digital Display</p>
+                                <div className="text-left">
+                                    <p className="font-bold text-sm sm:text-lg">Smart Dash</p>
+                                    <p className="text-[10px] sm:text-xs text-gray-400">Digital Display</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
-                                    <MonitorSmartphone className="w-5 h-5" />
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
+                                    <MonitorSmartphone className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div className="hidden lg:block absolute right-full top-1/2 w-16 h-px bg-gradient-to-l from-white/30 to-transparent -translate-y-1/2" />
                             </div>
@@ -1150,14 +1204,14 @@ const Hero = () => {
                             {/* 4. Bottom Right — App */}
                             <div
                                 ref={feat4Ref}
-                                className="absolute bottom-[25%] right-[5%] md:right-[5%] text-white flex items-center flex-row-reverse gap-4 cursor-pointer group z-20"
+                                className="absolute bottom-[22%] sm:bottom-[25%] right-[3%] md:right-[5%] text-white flex items-center flex-row-reverse gap-2 sm:gap-4 cursor-pointer group z-20"
                             >
-                                <div className="text-left hidden sm:block">
-                                    <p className="font-bold text-lg">App Control</p>
-                                    <p className="text-xs text-gray-400">Keyless Entry</p>
+                                <div className="text-left">
+                                    <p className="font-bold text-sm sm:text-lg">App Control</p>
+                                    <p className="text-[10px] sm:text-xs text-gray-400">Keyless Entry</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
-                                    <KeyRound className="w-5 h-5" />
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/20 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
+                                    <KeyRound className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div className="hidden lg:block absolute right-full top-1/2 w-24 h-px bg-gradient-to-l from-white/30 to-transparent -translate-y-1/2 rotate-[10deg] origin-right" />
                             </div>
@@ -1178,36 +1232,36 @@ const Hero = () => {
             <RearWheelFeature />
 
             {/* Promo Cards Section */}
-            <section className="bg-[#1a1a1a] px-6 pt-24 pb-24 relative z-30">
+            <section className="bg-[#1a1a1a] px-4 sm:px-6 pt-12 sm:pt-24 pb-12 sm:pb-24 relative z-30">
                 <div className="max-w-7xl mx-auto">
                     {/* Bottom Promo Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                         {/* Red Accent Card */}
                         <motion.div 
-                            className="bg-red-600 rounded-3xl p-8 md:p-12 relative overflow-hidden flex items-center min-h-[250px] group cursor-pointer"
+                            className="bg-red-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 relative overflow-hidden flex items-center min-h-[200px] sm:min-h-[250px] group cursor-pointer"
                             whileHover={{ y: -5 }}
                             transition={{ duration: 0.3 }}
                         >
                             <div className="relative z-10 w-2/3">
-                                <h3 className="text-3xl font-bold text-white mb-3">Version Mini</h3>
-                                <p className="text-red-100 text-sm mb-6 max-w-[250px]">Compact, lightweight, and perfect for quick city commutes.</p>
-                                <button className="text-white border border-white/40 px-6 py-2 rounded text-sm font-semibold hover:bg-white hover:text-red-600 transition">
+                                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Version Mini</h3>
+                                <p className="text-red-100 text-xs sm:text-sm mb-4 sm:mb-6 max-w-[250px]">Compact, lightweight, and perfect for quick city commutes.</p>
+                                <button className="text-white border border-white/40 px-4 sm:px-6 py-2 rounded text-xs sm:text-sm font-semibold hover:bg-white hover:text-red-600 transition">
                                     GO TO CATALOG
                                 </button>
                             </div>
-                            <img src="/assets/versionVo.png" alt="Scooter Wheel" className="absolute -right-10 top-1/2 -translate-y-1/2 w-64 md:w-80 object-cover group-hover:scale-110 transition-transform duration-700" />
+                            <img src="/assets/versionVo.png" alt="Scooter Wheel" className="absolute -right-6 sm:-right-10 top-1/2 -translate-y-1/2 w-48 sm:w-64 md:w-80 object-cover group-hover:scale-110 transition-transform duration-700" />
                         </motion.div>
 
                         {/* Light Card */}
                         <motion.div 
-                            className="bg-[#E5E5E5] rounded-3xl p-8 md:p-12 border border-white/20 relative overflow-hidden flex flex-col justify-center min-h-[250px] group cursor-pointer"
+                            className="bg-[#E5E5E5] rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-white/20 relative overflow-hidden flex flex-col justify-center min-h-[200px] sm:min-h-[250px] group cursor-pointer"
                             whileHover={{ y: -5 }}
                             transition={{ duration: 0.3 }}
                         >
                            <div className="relative z-10">
-                                <h3 className="text-3xl font-bold text-gray-900 mb-3">Parts & Tuning</h3>
-                                <p className="text-gray-600 text-sm mb-6 max-w-[280px]">Official accessories and parts to customize your Version rider experience.</p>
-                                <button className="text-gray-900 border border-gray-400 px-6 py-2 rounded text-sm font-semibold hover:bg-gray-900 hover:text-white transition">
+                                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">Parts & Tuning</h3>
+                                <p className="text-gray-600 text-xs sm:text-sm mb-4 sm:mb-6 max-w-[280px]">Official accessories and parts to customize your Version rider experience.</p>
+                                <button className="text-gray-900 border border-gray-400 px-4 sm:px-6 py-2 rounded text-xs sm:text-sm font-semibold hover:bg-gray-900 hover:text-white transition">
                                     GO TO CATALOG
                                 </button>
                             </div>

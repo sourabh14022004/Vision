@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import ProductCard from '../Components/ProductCard';
 
 /* ─── data ─────────────────────────────────────────────── */
 const FEATURED = {
@@ -451,80 +452,13 @@ const Products = () => {
             {MODELS.map((model, i) => (
               <motion.div
                 key={model.id}
-                variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i * 0.3}
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.3 }}
-                className="group relative rounded-2xl overflow-hidden flex flex-col cursor-pointer"
-                style={{
-                  background: '#161616',
-                  border: '1px solid rgba(255,255,255,0.07)',
-                }}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                custom={i * 0.15}
               >
-                {/* Tag */}
-                {model.tag && (
-                  <span
-                    className="absolute top-3 left-3 z-10 text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full"
-                    style={{ background: model.accent, color: '#fff' }}
-                  >
-                    {model.tag}
-                  </span>
-                )}
-
-                {/* Image area */}
-                <div
-                  className="relative flex items-center justify-center h-52 overflow-hidden"
-                  style={{ background: '#1a1a1a' }}
-                >
-                  <img
-                    src={model.image}
-                    alt={model.name}
-                    className="h-40 w-full object-contain transition-transform duration-500 group-hover:scale-110"
-                    style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.6))' }}
-                  />
-
-                  {/* Hover glow */}
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{ background: `radial-gradient(ellipse at center, ${model.accent}22 0%, transparent 70%)` }}
-                  />
-                </div>
-
-                {/* Info */}
-                <div className="p-5 flex flex-col gap-3 flex-1">
-                  <p className="text-[10px] font-mono tracking-[0.18em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                    {model.label}
-                  </p>
-                  <h3 className="font-black text-white text-lg leading-tight" style={{ letterSpacing: '-0.02em' }}>
-                    {model.name}
-                  </h3>
-
-                  {/* Mini stat pills */}
-                  <div className="flex gap-2">
-                    <span
-                      className="text-[10px] font-medium px-2.5 py-1 rounded-full"
-                      style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)' }}
-                    >
-                      ⚡ {model.speed}
-                    </span>
-                    <span
-                      className="text-[10px] font-medium px-2.5 py-1 rounded-full"
-                      style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)' }}
-                    >
-                      🔋 {model.range}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between mt-auto pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                    <p className="font-black text-white text-base">{model.price}</p>
-                    <motion.button
-                      whileHover={{ scale: 1.07 }} whileTap={{ scale: 0.95 }}
-                      className="text-[11px] font-semibold px-4 py-2 rounded-lg transition-colors"
-                      style={{ background: model.accent, color: '#fff' }}
-                    >
-                      Buy Now
-                    </motion.button>
-                  </div>
-                </div>
+                <ProductCard product={model} />
               </motion.div>
             ))}
           </div>
